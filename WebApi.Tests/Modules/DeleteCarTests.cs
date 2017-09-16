@@ -1,7 +1,8 @@
 ﻿using System;
+using Datalayer;
 using FluentAssertions;
+using Moq;
 using Nancy;
-using Nancy.Testing;
 using NUnit.Framework;
 
 namespace WebApi.Tests.Modules
@@ -22,6 +23,24 @@ namespace WebApi.Tests.Modules
 
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Test]
+        public void Should_call_repository()
+        {
+            // arrange
+            var carId = Guid.NewGuid();
+
+            var repositoryMock = new Mock<ICarsRepository>();
+            repositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
+
+            var browser = CreateBrowser(repositoryMock.Object);
+
+            // act
+            browser.Delete($"/cars/{carId}");
+
+            // assert
+            repositoryMock.Verify(x => x.Delete(carId));
         }
     }
 }

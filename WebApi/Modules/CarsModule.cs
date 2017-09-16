@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using Datalayer;
 using Model;
 using Nancy;
 using Nancy.ModelBinding;
@@ -9,11 +9,14 @@ namespace WebApi.Modules
 {
     public class CarsModule : NancyModule
     {
-        private ICarValidator _carValidator;
+        private readonly ICarValidator _carValidator;
+        private readonly ICarsRepository _carsRepository;
 
-        public CarsModule(ICarValidator carValidator) : base("cars")
+        public CarsModule(ICarValidator carValidator, ICarsRepository carsRepository)
+            : base("cars")
         {
             _carValidator = carValidator;
+            _carsRepository = carsRepository;
 
             Get["/"] = _ => this.GetAll();
 
@@ -28,6 +31,8 @@ namespace WebApi.Modules
 
         private Response DeleteCar(Guid id)
         {
+            _carsRepository.Delete(id);
+
             return new Response {StatusCode = HttpStatusCode.OK};
         }
 
@@ -39,6 +44,8 @@ namespace WebApi.Modules
             {
                 return new Response {StatusCode = HttpStatusCode.BadRequest};
             }
+
+            _carsRepository.Update(car);
 
             return new Response { StatusCode = HttpStatusCode.OK};
         }
@@ -52,6 +59,8 @@ namespace WebApi.Modules
                 return new Response {StatusCode = HttpStatusCode.BadRequest};
             }
 
+            _carsRepository.Add(car);
+
             return new Response
             {
                 StatusCode = HttpStatusCode.Created,
@@ -59,14 +68,23 @@ namespace WebApi.Modules
             };
         }
 
-        private Car GetById(Guid id)
+        private Response GetById(Guid id)
         {
-            return new Car {Id = id};
+            var car = _carsRepository.GetById(id);
+
+            if (car == null)
+            {
+                return new Response {StatusCode = HttpStatusCode.NotFound};
+            }
+
+            return Response.AsJson(car);
         }
 
-        private IEnumerable<Car> GetAll()
+        private Response GetAll()
         {
-            return new[] {new Car()};
+            var cars = _carsRepository.GetAll();
+
+            return Response.AsJson(cars);
         }
     }
 }

@@ -103,6 +103,10 @@
     <Compile Include="Validators\IValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Datalayer\Datalayer.csproj">
+      <Project>{E4D3C16A-3F0C-4295-99E9-0CA7974C88EC}</Project>
+      <Name>Datalayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{42C2C8AF-C8DE-48D3-B716-92A9149213D9}</Project>
       <Name>Model</Name>

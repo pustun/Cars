@@ -1,4 +1,5 @@
 ﻿using System;
+using Datalayer;
 using FluentAssertions;
 using Model;
 using Moq;
@@ -39,7 +40,7 @@ namespace WebApi.Tests.Modules
             var carId = Guid.NewGuid();
             var car = new Car {Id = carId};
 
-            var browser = CreateBrowserWithValidator(validatorMock.Object);
+            var browser = CreateBrowser(validatorMock.Object);
 
             // act
             browser.Put($"/cars/{carId}", with => with.JsonBody(car));
@@ -59,13 +60,32 @@ namespace WebApi.Tests.Modules
             var carId = Guid.NewGuid();
             var car = new Car {Id = carId};
 
-            var browser = CreateBrowserWithValidator(validatorMock.Object);
+            var browser = CreateBrowser(validatorMock.Object);
 
             // act
             var response = browser.Put($"/cars/{carId}", with => with.JsonBody(car));
 
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void Should_call_repository()
+        {
+            // arrange
+            var repositoryMock = new Mock<ICarsRepository>();
+            repositoryMock.Setup(x => x.Update(It.IsAny<Car>()));
+
+            var carId = Guid.NewGuid();
+            var car = new Car {Id = carId};
+
+            var browser = CreateBrowser(repositoryMock.Object);
+
+            // act
+            browser.Put($"/cars/{carId}", with => with.JsonBody(car));
+
+            // assert
+            repositoryMock.Verify(x => x.Update(It.Is((Car carToUpdate) => carToUpdate.Id == carId)));
         }
     }
 }
