@@ -1,4 +1,5 @@
-﻿using Nancy;
+﻿using Datalayer;
+using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 using WebApi.Services;
@@ -21,6 +22,8 @@ namespace WebApi
             container.Register<ICarValidationRule, FirstRegistrationValidationRule>().AsSingleton();
 
             container.Register<ICalendar, Calendar>().AsSingleton();
+
+            container.Register<ICarsRepository, CarsRepository>().AsSingleton();
 
             base.ApplicationStartup(container, pipelines);
         }
