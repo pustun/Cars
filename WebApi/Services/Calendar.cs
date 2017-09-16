@@ -1,7 +1,6 @@
 ﻿using System;
-using WebApi.Services;
 
-namespace WebApi.Tests
+namespace WebApi.Services
 {
     public class Calendar : ICalendar
     {

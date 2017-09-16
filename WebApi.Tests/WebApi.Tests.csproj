@@ -72,8 +72,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calendar.cs" />
     <Compile Include="Modules\AddNewCarTests.cs" />
+    <Compile Include="Modules\CarModuleTestsBase.cs" />
     <Compile Include="Modules\DeleteCarTests.cs" />
     <Compile Include="Modules\GetAllCarsTests.cs" />
     <Compile Include="Modules\GetCarByIdTests.cs" />

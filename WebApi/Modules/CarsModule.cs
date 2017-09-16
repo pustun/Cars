@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using Model;
 using Nancy;
 using Nancy.ModelBinding;
-using Nancy.Validation;
+using WebApi.Validators;
 
 namespace WebApi.Modules
 {
     public class CarsModule : NancyModule
     {
-        public CarsModule() : base("cars")
+        private ICarValidator _carValidator;
+
+        public CarsModule(ICarValidator carValidator) : base("cars")
         {
+            _carValidator = carValidator;
+
             Get["/"] = _ => this.GetAll();
 
             Get["/{id}"] = args => this.GetById(args.id);
@@ -31,12 +35,22 @@ namespace WebApi.Modules
         {
             var car = this.Bind<Car>();
 
+            if (!_carValidator.IsValid(car))
+            {
+                return new Response {StatusCode = HttpStatusCode.BadRequest};
+            }
+
             return new Response { StatusCode = HttpStatusCode.OK};
         }
 
         private Response AddCar()
         {
             var car = this.Bind<Car>();
+
+            if (!_carValidator.IsValid(car))
+            {
+                return new Response {StatusCode = HttpStatusCode.BadRequest};
+            }
 
             return new Response
             {
