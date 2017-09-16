@@ -6,7 +6,7 @@ using Nancy;
 using Nancy.Testing;
 using NUnit.Framework;
 
-namespace WebApi.Tests
+namespace WebApi.Tests.Modules
 {
     [TestFixture]
     public class CarModuleTests

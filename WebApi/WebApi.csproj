@@ -88,6 +88,17 @@
   <ItemGroup>
     <Compile Include="Modules\CarsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ICalendar.cs" />
+    <Compile Include="Validators\CarValidationRules\FirstRegistrationValidationRule.cs" />
+    <Compile Include="Validators\CarValidationRules\FuelValidationRule.cs" />
+    <Compile Include="Validators\CarValidationRules\MileageValidationRule.cs" />
+    <Compile Include="Validators\CarValidationRules\PriceValidationRule.cs" />
+    <Compile Include="Validators\CarValidationRules\TitleValidationRule.cs" />
+    <Compile Include="Validators\CarValidator.cs" />
+    <Compile Include="Validators\ICarValidationRule.cs" />
+    <Compile Include="Validators\ICarValidator.cs" />
+    <Compile Include="Validators\CarValidationRules\IdValidationRule.cs" />
+    <Compile Include="Validators\IValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">
@@ -95,6 +106,7 @@
       <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

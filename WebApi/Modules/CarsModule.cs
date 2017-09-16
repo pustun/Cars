@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Model;
 using Nancy;
 using Nancy.ModelBinding;
+using Nancy.Validation;
 
 namespace WebApi.Modules
 {
