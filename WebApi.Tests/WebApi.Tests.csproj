@@ -73,7 +73,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calendar.cs" />
-    <Compile Include="Modules\CarModuleTests.cs" />
+    <Compile Include="Modules\AddNewCarTests.cs" />
+    <Compile Include="Modules\DeleteCarTests.cs" />
+    <Compile Include="Modules\GetAllCarsTests.cs" />
+    <Compile Include="Modules\GetCarByIdTests.cs" />
+    <Compile Include="Modules\UpdateCarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\CarValidatorTests.cs" />
     <Compile Include="Validation\FirstRegistrationValidationRuleTests.cs" />

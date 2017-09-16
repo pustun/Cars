@@ -1,5 +1,4 @@
-﻿using System;
-using Model;
+﻿using Model;
 using WebApi.Services;
 
 namespace WebApi.Validators.CarValidationRules
