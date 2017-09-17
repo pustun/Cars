@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Datalayer;
 using Model;
 using Nancy;
 using Nancy.ModelBinding;
+using WebApi.Common;
+using WebApi.Services;
 using WebApi.Validators;
 
 namespace WebApi.Modules
@@ -11,12 +14,16 @@ namespace WebApi.Modules
     {
         private readonly ICarValidator _carValidator;
         private readonly ICarsRepository _carsRepository;
+        private readonly ICarSortExpressionMapper _sortExpressionMapper;
 
-        public CarsModule(ICarValidator carValidator, ICarsRepository carsRepository)
+        public CarsModule(ICarValidator carValidator,
+                          ICarsRepository carsRepository,
+                          ICarSortExpressionMapper sortExpressionMapper)
             : base("cars")
         {
             _carValidator = carValidator;
             _carsRepository = carsRepository;
+            _sortExpressionMapper = sortExpressionMapper;
 
             Get["/"] = _ => this.GetAll();
 
@@ -82,7 +89,15 @@ namespace WebApi.Modules
 
         private Response GetAll()
         {
-            var cars = _carsRepository.GetAll();
+            Expression<Func<Car, object>> defaultSortExpression = car => car.Id;
+
+            var sortDefintion = this.Bind<SortDefinition>();
+
+            var sortExpression = string.IsNullOrWhiteSpace(sortDefintion.Sort)
+                ? defaultSortExpression
+                : _sortExpressionMapper.Map(sortDefintion.Sort);
+
+            var cars = _carsRepository.GetAll(sortExpression);
 
             return Response.AsJson(cars);
         }

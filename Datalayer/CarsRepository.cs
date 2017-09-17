@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq.Expressions;
 using Model;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
@@ -60,12 +61,12 @@ namespace Datalayer
                 .FirstOrDefault();
         }
 
-        public IEnumerable<Car> GetAll()
+        public IEnumerable<Car> GetAll(Expression<Func<Car, object>> sortExpression)
         {
             var carsCollection = GetCarsCollection();
             return carsCollection
                 .Find(x => true)
-                .SortBy(x => x.Title)
+                .SortBy(sortExpression)
                 .ToList();
         }
     }

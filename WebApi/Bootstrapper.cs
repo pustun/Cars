@@ -25,6 +25,8 @@ namespace WebApi
 
             container.Register<ICarsRepository, CarsRepository>().AsSingleton();
 
+            container.Register<ICarSortExpressionMapper, CarSortExpressionMapper>().AsSingleton();
+
             base.ApplicationStartup(container, pipelines);
         }
     }

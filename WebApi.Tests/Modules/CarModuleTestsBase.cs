@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Datalayer;
 using Model;
 using Moq;
 using Nancy.Testing;
 using WebApi.Modules;
+using WebApi.Services;
 using WebApi.Validators;
 
 namespace WebApi.Tests.Modules
@@ -14,7 +16,10 @@ namespace WebApi.Tests.Modules
         {
             var validator = MockValidator();
             var repository = MockRepository();
-            return CreateBrowser(validator, repository);
+            var mapper = MockMapper();
+            return CreateBrowser(validator,
+                                 repository,
+                                 mapper);
         }
 
         private ICarValidator MockValidator()
@@ -32,7 +37,7 @@ namespace WebApi.Tests.Modules
             repositoryMock.Setup(x => x.Add(It.IsAny<Car>()));
             repositoryMock.Setup(x => x.Update(It.IsAny<Car>()));
             repositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
-            repositoryMock.Setup(x => x.GetAll())
+            repositoryMock.Setup(x => x.GetAll(It.IsAny<Expression<Func<Car, object>>>()))
                 .Returns(new[] { new Car { Id = Guid.NewGuid() }, new Car { Id = Guid.NewGuid() } });
             repositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
                 .Returns((Guid id) => new Car { Id = id });
@@ -40,19 +45,47 @@ namespace WebApi.Tests.Modules
             return repositoryMock.Object;
         }
 
+        private ICarSortExpressionMapper MockMapper()
+        {
+            Expression<Func<Car, object>> sortExpression = car => car.Id;
+
+            var sortMapperMock = new Mock<ICarSortExpressionMapper>();
+            sortMapperMock.Setup(x => x.Map(It.IsAny<string>()))
+                .Returns(sortExpression);
+
+            return sortMapperMock.Object;
+        }
+
         protected Browser CreateBrowser(ICarValidator carValidator)
         {
-            return CreateBrowser(carValidator, MockRepository());
+            return CreateBrowser(carValidator,
+                                 MockRepository(),
+                                 MockMapper());
         }
 
         protected Browser CreateBrowser(ICarsRepository repository)
         {
-            return CreateBrowser(MockValidator(), repository);
+            return CreateBrowser(MockValidator(),
+                                 repository,
+                                 MockMapper());
         }
 
-        protected Browser CreateBrowser(ICarValidator carValidator, ICarsRepository carsRepository)
+        protected Browser CreateBrowser(ICarsRepository carsRepository,
+                                        ICarSortExpressionMapper sortExpressionMapper)
         {
-            return new Browser(with => with.Module(new CarsModule(carValidator, carsRepository)),
+            return CreateBrowser(MockValidator(),
+                                 carsRepository,
+                                 sortExpressionMapper);
+        }
+
+        protected Browser CreateBrowser(ICarValidator carValidator,
+                                        ICarsRepository carsRepository,
+                                        ICarSortExpressionMapper sortExpressionMapper)
+        {
+            return new Browser(with => with.Module(
+                                    new CarsModule(carValidator,
+                                                   carsRepository,
+                                                   sortExpressionMapper)),
                                defaults: to => to.Accept("application/json"));
         }
     }

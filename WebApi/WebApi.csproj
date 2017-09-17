@@ -87,10 +87,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\SortDefinition.cs" />
     <Compile Include="Modules\CarsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Calendar.cs" />
+    <Compile Include="Services\CarSortExpressionMapper.cs" />
     <Compile Include="Services\ICalendar.cs" />
+    <Compile Include="Services\ICarSortExpressionMapper.cs" />
     <Compile Include="Validators\CarValidationRules\FirstRegistrationValidationRule.cs" />
     <Compile Include="Validators\CarValidationRules\FuelValidationRule.cs" />
     <Compile Include="Validators\CarValidationRules\MileageValidationRule.cs" />
