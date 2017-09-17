@@ -23,7 +23,7 @@ namespace WebApi.Tests.Modules
             var browser = Browser().Build();
 
             // act
-            var response = browser.Put($"/cars/{carId}", with => with.JsonBody(carToUpdate));
+            var response = browser.Put("/cars", with => with.JsonBody(carToUpdate));
 
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -44,7 +44,7 @@ namespace WebApi.Tests.Modules
                                     .Build();
 
             // act
-            browser.Put($"/cars/{carId}", with => with.JsonBody(car));
+            browser.Put("/cars", with => with.JsonBody(car));
 
             // assert
             validatorMock.Verify(x => x.IsValid(It.IsAny<Car>()));
@@ -65,7 +65,7 @@ namespace WebApi.Tests.Modules
                                     .Build();
 
             // act
-            var response = browser.Put($"/cars/{carId}", with => with.JsonBody(car));
+            var response = browser.Put("/cars", with => with.JsonBody(car));
 
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -85,7 +85,7 @@ namespace WebApi.Tests.Modules
                                     .Build();
 
             // act
-            browser.Put($"/cars/{carId}", with => with.JsonBody(car));
+            browser.Put("/cars", with => with.JsonBody(car));
 
             // assert
             repositoryMock.Verify(x => x.Update(It.Is((Car carToUpdate) => carToUpdate.Id == carId)));

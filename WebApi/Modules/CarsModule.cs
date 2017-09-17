@@ -31,7 +31,7 @@ namespace WebApi.Modules
 
             Post["/"] = _ => this.AddCar();
 
-            Put["/{id}"] = args => this.UpdateCar(args.id);
+            Put["/"] = _ => this.UpdateCar();
 
             Delete["/{id}"] = args => this.DeleteCar(args.id);
         }
@@ -43,7 +43,7 @@ namespace WebApi.Modules
             return new Response {StatusCode = HttpStatusCode.OK};
         }
 
-        private Response UpdateCar(Guid id)
+        private Response UpdateCar()
         {
             var car = this.Bind<Car>();
 
