@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>Demo App</title>
+  <meta charset="utf-8" />
+  
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.7.4/showdown.min.js"></script>
+  <style>
+    #content {
+      width: 1000px;
+      margin: 0px auto;
+    }
+  </style>
+  <script>
+    $(function() {
+      $.ajax({
+        method: 'GET',
+        url: '/readme.md',
+        success: function (markdown) {
+          var converter = new showdown.Converter();
+          var html = converter.makeHtml(markdown);
+          $("#content").html(html);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="content"></div>
+</body>
+</html>
