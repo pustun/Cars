@@ -12,6 +12,8 @@ namespace WebApi
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            base.ApplicationStartup(container, pipelines);
+
             container.Register<ICarValidator, CarValidator>().AsSingleton();
 
             container.Register<ICarValidationRule, IdValidationRule>().AsSingleton();
@@ -26,8 +28,18 @@ namespace WebApi
             container.Register<ICarsRepository, CarsRepository>().AsSingleton();
 
             container.Register<ICarSortExpressionMapper, CarSortExpressionMapper>().AsSingleton();
+        }
 
-            base.ApplicationStartup(container, pipelines);
+        protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
+        {
+            base.RequestStartup(container, pipelines, context);
+
+            pipelines.AfterRequest.AddItemToEndOfPipeline(ctx =>
+            {
+                ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
+                    .WithHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS")
+                    .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type");
+            });
         }
     }
 }
