@@ -12,7 +12,7 @@ It uses [NancyFX](http://nancyfx.org "NancyFX") to implement REST endpoints. It 
 
     	public string Title { get; set; }
 
-	    public Fuel Fuel { get; set; }
+    	public Fuel Fuel { get; set; }
 
     	public int Price { get; set; }
 
