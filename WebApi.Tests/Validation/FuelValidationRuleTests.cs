@@ -37,5 +37,20 @@ namespace WebApi.Tests.Validation
             // assert
             isValid.Should().BeTrue();
         }
+
+        [Test]
+        public void Should_fail_if_fuel_is_not_defined_in_enum()
+        {
+            // arrange
+            var car = new Car { Fuel = (Fuel) 42};
+
+            var sut = new FuelValidationRule();
+
+            // act
+            var isValid = sut.IsValid(car);
+
+            // assert
+            isValid.Should().BeFalse();
+        }
     }
 }

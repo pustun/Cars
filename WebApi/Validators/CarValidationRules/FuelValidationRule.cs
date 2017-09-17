@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using System;
+using Model;
 
 namespace WebApi.Validators.CarValidationRules
 {
@@ -6,7 +7,8 @@ namespace WebApi.Validators.CarValidationRules
     {
         public bool IsValid(Car car)
         {
-            return car.Fuel != Fuel.None;
+            return Enum.IsDefined(typeof(Fuel), car.Fuel)
+                    && car.Fuel != Fuel.None;
         }
     }
 }
