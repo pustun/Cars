@@ -55,6 +55,6 @@ Payload example:
 	}
 
 
-**PUT /cars** updates and existing entry. Request payload is identical to the previous example.
+**PUT /cars** updates an existing entry. Request payload is identical to the previous example.
 
 **DELETE /cars/{id}** removes the entry by provided id
