@@ -2,6 +2,8 @@
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using WebApi.Services;
 using WebApi.Validators;
 using WebApi.Validators.CarValidationRules;
@@ -28,6 +30,8 @@ namespace WebApi
             container.Register<ICarsRepository, CarsRepository>().AsSingleton();
 
             container.Register<ICarSortExpressionMapper, CarSortExpressionMapper>().AsSingleton();
+
+            container.Register<JsonSerializer, CustomJsonSerializer>().AsSingleton();
         }
 
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
@@ -40,6 +44,15 @@ namespace WebApi
                     .WithHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS")
                     .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type");
             });
+        }
+    }
+
+    public class CustomJsonSerializer : JsonSerializer
+    {
+        public CustomJsonSerializer()
+        {
+            this.Formatting = Formatting.Indented;
+            this.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
         }
     }
 }
