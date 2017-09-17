@@ -20,7 +20,7 @@ namespace WebApi.Tests.Modules
             var carId = Guid.NewGuid();
             var carToAdd = new Car { Id = carId };
 
-            var browser = CreateDefaultBrowser();
+            var browser = Browser().Build();
 
             // act
             var response = browser.Post("/cars", with => with.JsonBody(carToAdd));
@@ -40,7 +40,8 @@ namespace WebApi.Tests.Modules
 
             var car = new Car();
 
-            var browser = CreateBrowser(validatorMock.Object);
+            var browser = Browser().WithValidator(validatorMock.Object)
+                                    .Build();
 
             // act
             browser.Post("/cars", with => with.JsonBody(car));
@@ -59,7 +60,8 @@ namespace WebApi.Tests.Modules
 
             var car = new Car();
 
-            var browser = CreateBrowser(validatorMock.Object);
+            var browser = Browser().WithValidator(validatorMock.Object)
+                                    .Build();
 
             // act
             var response = browser.Post("/cars", with => with.JsonBody(car));
@@ -78,8 +80,9 @@ namespace WebApi.Tests.Modules
             var carId = Guid.NewGuid();
             var car = new Car {Id = carId};
 
-            var browser = CreateBrowser(repositoryMock.Object);
-            
+            var browser = Browser().WithRepository(repositoryMock.Object)
+                                    .Build();
+
             // act
             browser.Post("/cars", with => with.JsonBody(car));
 

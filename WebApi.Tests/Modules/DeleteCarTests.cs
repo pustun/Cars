@@ -16,7 +16,7 @@ namespace WebApi.Tests.Modules
             // arrange
             var carId = Guid.NewGuid();
 
-            var browser = CreateDefaultBrowser();
+            var browser = Browser().Build();
 
             // act
             var response = browser.Delete($"/cars/{carId}");
@@ -34,7 +34,8 @@ namespace WebApi.Tests.Modules
             var repositoryMock = new Mock<ICarsRepository>();
             repositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
 
-            var browser = CreateBrowser(repositoryMock.Object);
+            var browser = Browser().WithRepository(repositoryMock.Object)
+                                    .Build();
 
             // act
             browser.Delete($"/cars/{carId}");

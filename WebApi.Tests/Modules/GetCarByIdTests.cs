@@ -19,7 +19,7 @@ namespace WebApi.Tests.Modules
             // arrange
             var carId = Guid.NewGuid();
 
-            var browser = CreateDefaultBrowser();
+            var browser = Browser().Build();
 
             // act
             var response = browser.Get($"/cars/{carId}");
@@ -41,7 +41,8 @@ namespace WebApi.Tests.Modules
             repositoryMock.Setup(x => x.GetById(carId))
                 .Returns(new Car {Id = carId});
 
-            var browser = CreateBrowser(repositoryMock.Object);
+            var browser = Browser().WithRepository(repositoryMock.Object)
+                                    .Build();
 
             // act
             browser.Get($"/cars/{carId}");
@@ -59,7 +60,8 @@ namespace WebApi.Tests.Modules
             repositoryMock.Setup(x => x.GetById(carId))
                 .Returns((Car)null);
 
-            var browser = CreateBrowser(repositoryMock.Object);
+            var browser = Browser().WithRepository(repositoryMock.Object)
+                                    .Build();
 
             // act
             var response = browser.Get($"/cars/{carId}");

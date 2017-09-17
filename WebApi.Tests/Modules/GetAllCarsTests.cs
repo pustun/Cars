@@ -20,7 +20,7 @@ namespace WebApi.Tests.Modules
         public void Should_return_all_cars()
         {
             // arrange
-            var browser = CreateDefaultBrowser();
+            var browser = Browser().Build();
 
             // act
             var response = browser.Get("/cars");
@@ -44,7 +44,8 @@ namespace WebApi.Tests.Modules
             repositoryMock.Setup(x => x.GetAll(It.IsAny<Expression<Func<Car, object>>>()))
                 .Returns(new[] {new Car {Id = carId1}, new Car {Id = carId2}});
 
-            var browser = CreateBrowser(repositoryMock.Object);
+            var browser = Browser().WithRepository(repositoryMock.Object)
+                                    .Build();
 
             // act
             var response = browser.Get("/cars");
@@ -72,7 +73,9 @@ namespace WebApi.Tests.Modules
             var repositoryMock = new Mock<ICarsRepository>();
             repositoryMock.Setup(x => x.GetAll(It.IsAny<Expression<Func<Car, object>>>()));
 
-            var browser = CreateBrowser(repositoryMock.Object, sortMapperMock.Object);
+            var browser = Browser().WithRepository(repositoryMock.Object)
+                                    .WithSortExpressionsMapper(sortMapperMock.Object)
+                                    .Build();
 
             // act
             browser.Get("/cars", with => with.Query("sort", "mileage"));

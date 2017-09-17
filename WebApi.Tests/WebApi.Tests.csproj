@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrowserBuilders\CarModuleBrowserBuilder.cs" />
     <Compile Include="Modules\AddNewCarTests.cs" />
     <Compile Include="Modules\CarModuleTestsBase.cs" />
     <Compile Include="Modules\DeleteCarTests.cs" />
